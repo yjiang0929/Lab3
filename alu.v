@@ -7,16 +7,6 @@
 `define NOR  3'd6
 `define OR   3'd7
 
-`define NAND_GATE nand #20
-`define AND_GATE  and #30
-`define XOR_GATE  xor #30
-`define NOT_GATE  not #10
-`define OR_GATE   or #30
-`define NOR_32_GATE nor #320
-`define AND_32_GATE and #330
-`define NOR_GATE nor #20
-`define OR_3_GATE or #40
-
 `include "bitslice.v"
 
 module ALUcontrolLUT
@@ -85,22 +75,22 @@ input[2:0]    command
 		.ALUcommand(command));
 
 	//Flags
-	`XOR_GATE overflow_xor_gate(overflow_internal, c[30], c[31]);
-	`AND_GATE overflow_and_gate(overflow,overflow_internal,set_flags);
-	`AND_GATE zero_and_gate(zero, zero_nor, set_flags);
-	`AND_GATE carryout_and_gate(carryout, c[31], set_flags);
-	`NOR_32_GATE out_nor_gate(zero_nor, out[0], out[1], out[2], out[3], out[4], out[5], out[6], out[7], out[8], out[9], out[10], out[11], out[12], out[13], out[14], out[15], out[16], out[17], out[18], out[19], out[20], out[21], out[22], out[23], out[24], out[25], out[26], out[27], out[28], out[29], out[30], out[31]);
+	xor overflow_xor_gate(overflow_internal, c[30], c[31]);
+	and overflow_and_gate(overflow,overflow_internal,set_flags);
+	and zero_and_gate(zero, zero_nor, set_flags);
+	and carryout_and_gate(carryout, c[31], set_flags);
+	nor out_nor_gate(zero_nor, out[0], out[1], out[2], out[3], out[4], out[5], out[6], out[7], out[8], out[9], out[10], out[11], out[12], out[13], out[14], out[15], out[16], out[17], out[18], out[19], out[20], out[21], out[22], out[23], out[24], out[25], out[26], out[27], out[28], out[29], out[30], out[31]);
 
 	//SLT
-	`NOT_GATE b_not_gate(nb, operandB[31]);
-	`NOT_GATE out_not_gate(nout, out[31]);
-	`AND_GATE b_and_gate(slt_b_and, nb, out[31]);
-	`AND_GATE out_and_gate(slt_a_and, operandA[31], out[31]);
-	`AND_GATE ab_and_gate(slt_ab_and, nb, operandA[31]);
-	`OR_3_GATE  slt_or_gate(SLT_internal, slt_b_and, slt_a_and, slt_ab_and);
-	`NOT_GATE slt_not_gate(nslt_enable, slt_enable);
-	`AND_GATE slt_final_and_gate(slt_final, SLT_internal, slt_enable);
-	`AND_GATE slt_and_gate(slt_nand, out[0],nslt_enable);
+	not b_not_gate(nb, operandB[31]);
+	not out_not_gate(nout, out[31]);
+	and b_and_gate(slt_b_and, nb, out[31]);
+	and out_and_gate(slt_a_and, operandA[31], out[31]);
+	and ab_and_gate(slt_ab_and, nb, operandA[31]);
+	or  slt_or_gate(SLT_internal, slt_b_and, slt_a_and, slt_ab_and);
+	not slt_not_gate(nslt_enable, slt_enable);
+	and slt_final_and_gate(slt_final, SLT_internal, slt_enable);
+	and slt_and_gate(slt_nand, out[0],nslt_enable);
 
 	//First bitslice
 	bitSlice bitslice0( .c_out(out[0]), .carry_out(c[0]), .A(operandA[0]),
@@ -109,7 +99,7 @@ input[2:0]    command
 		.subtract(subtract));
 		//carry_in subtract on the first bit, to handle the 
 		//adding 1 in 2's complement subtraction
-	`OR_GATE result_or(result[0],slt_nand,slt_final);
+	or result_or(result[0],slt_nand,slt_final);
 
 	//Generate remaining bitslices and slt_enable and gates
 	genvar i;
@@ -124,7 +114,7 @@ input[2:0]    command
 				.B(operandB[i]), 
 				.mux_in({alu_code_internal2,alu_code_internal1,alu_code_internal0}), 
 				.subtract(subtract));
-			`AND_GATE result_and(result[i], out[i], nslt_enable);
+			and result_and(result[i], out[i], nslt_enable);
 		end
 	endgenerate
 
