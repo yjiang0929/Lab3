@@ -1,0 +1,11 @@
+Different files:
+1) CPU
+2) Decoder
+3) Register
+4) Sign extension
+5) Program Counter
+
+Test all of the above plus:
+ALU
+
+7) Appropriate
