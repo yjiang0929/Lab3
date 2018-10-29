@@ -34,7 +34,7 @@ always @(ALUcommand) begin
 end
 endmodule
 
-module ALU
+module alu
 (
 output[31:0]  result,
 output        carryout,

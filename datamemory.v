@@ -1,7 +1,7 @@
 // Data memory, with automatic initialization
 // Credit: Ben Hill
 
-module memory
+module dataMemory
 (
   input clk, regWE,
   input[9:0] Addr,
@@ -17,7 +17,7 @@ module memory
     end
   end
   
-  initial $readmemh(“file.dat”, mem);
+	initial $readmemh("file.dat", mem);
     
   assign DataOut = mem[Addr];
 endmodule
