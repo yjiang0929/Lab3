@@ -1,4 +1,4 @@
-module sign_ext
+module signExt
 (
   input [15:0] imm,
   output [31:0] immExt
