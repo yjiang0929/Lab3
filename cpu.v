@@ -16,13 +16,13 @@ module cpu(
 
 
 	wire [31:0] nextPc, Da, Db, DbOrImm, Dw, resAluRes, immExt, memAddr, memOut, cmdOut, pcAluRes, pcAdd, branchAluRes;
-	wire [4:0] Aa, Ab, Aw;
 	wire zeroFlag;
 
 	// These should be set by the decoder
 	wire immSel, memAddrSel, regWrEn,  memWrEn;
 	wire [1:0] DwSel, pcSel, jSel;
 	wire [2:0] resAluOp;
+	wire [4:0] Aa, Ab, Aw;
 	wire [15:0] imm;
 	wire [25:0] jumpAddr;
 
