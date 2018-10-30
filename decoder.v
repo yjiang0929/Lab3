@@ -14,7 +14,7 @@ module decoder(
 	output [4:0] Aa, Ab, Aw, 
 	output [2:0] aluOp,
 	output [15:0] imm,
-	output [31:0] branchAddr
+	output [25:0] jumpAddr
 );
 
 	wire [5:0] opcode; assign opcode = cmd[31:26];
@@ -34,6 +34,7 @@ module decoder(
 	wire slt; assign slt = (opcode == 6'h0 && funct == 6'h2a);
 
 	assign imm = cmd[15:0];
+	assign jumpAddr = cmd[25:0];
 
 	assign Aa = cmd[25:21];
 	assign Ab = cmd[20:16];
