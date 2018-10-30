@@ -9,7 +9,7 @@
 
 module decoder(
 	input [31:0] cmd,
-	output immSel, memWrEn, memAddrSel, regWrEn,
+	output immSel, memWrEn, regWrEn,
 	output [1:0] DwSel, jSel, pcSel, 
 	output [4:0] Aa, Ab, Aw, 
 	output [2:0] aluOp,
