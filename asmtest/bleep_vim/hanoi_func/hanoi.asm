@@ -1,6 +1,6 @@
 # Function call test: recursive Tower of Hanoi problem
 
-main: 
+main:
 # Set up arguments for call to hanoi_test
 addi  $a0, $zero, 4	# arg0 = 4
 addi  $a1, $zero, 8	# arg1 = 8
@@ -14,18 +14,18 @@ j     program_end
 #     int hanoi_test(arg0, arg1) {
 #         return hanoi(arg0) + hanoi(arg1);
 #     }
-# By MIPS calling convention, expects arguments in 
+# By MIPS calling convention, expects arguments in
 # registers a0 and a1, and returns result in register v0.
 hanoi_test:
-# We will use s0 and s1 registers in this function, plus the ra register 
+# We will use s0 and s1 registers in this function, plus the ra register
 # to return at the end. Save them to stack in case caller was using them.
 addi  $sp, $sp, -12	# Allocate three words on stack at once for three pushes
-sw    $ra, 8($sp)	# Push ra on the stack (will be overwritten by Fib function calls)
+sw    $ra, 8($sp)	# Push ra on the stack (will be overwritten by hanoi function calls)
 sw    $s0, 4($sp)	# Push s0 onto stack
 sw    $s1, 0($sp)	# Push s1 onto stack
 
 # a1 may be overwritten by called functions, so save it to s1 (saved temporary),
-# which called function won't change, so we can use it later for the second fib call
+# which called function won't change, so we can use it later for the second hanoi call
 add  $s1, $zero, $a1
 
 # Call hanoi(arg0), save result in s0
@@ -54,8 +54,8 @@ jr    $ra		# Return to caller
 #
 #     int hanoi(int n) {
 #         if (n == 1) return 1;  // Base case
-#         int fib_1 = Hanoi(n - 1);
-#         return 2*fib_1+1;
+#         int hanoi_1 = Hanoi(n - 1);
+#         return 2*hanoi_1+1;
 #     }
 hanoi:
 # Test base case. If we're in a base case, return directly (no need to use stack)

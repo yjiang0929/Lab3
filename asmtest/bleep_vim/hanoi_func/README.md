@@ -13,8 +13,8 @@ Equivalent C code:
 ```C
      int hanoi(int n) {
          if (n == 1) return 1;  // Base case
-         int fib_1 = Hanoi(n - 1);
-         return 2*fib_1+1;
+         int hanoi_1 = Hanoi(n - 1);
+         return 2*hanoi_1+1;
      }
 
      int hanoi_test(arg0, arg1) {
