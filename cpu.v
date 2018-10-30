@@ -5,6 +5,7 @@
 `include "alu.v"
 `include "mux.v"
 `include "signExt.v"
+`include "decoder.v"
 
 module cpu(
 	input clk
@@ -25,6 +26,7 @@ module cpu(
 	wire [15:0] imm;
 	wire [25:0] jumpAddr;
 
+	decoder dec(cmdOut, immSel, memWrEn, memAddrSel, regWrEn, DwSel, jSel, pcSel, Aa, Ab, Aw, resAluOp, imm, jumpAddr);
 
 
 	mux3 DwMux(Dw, resAluRes, pcAluRes, memOut, DwSel);
