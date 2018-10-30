@@ -31,14 +31,12 @@ module cpu(
 	alu resAlu(resAluRes, , zeroFlag, , Da, DbOrImm, resAluOp);
 
 	mux2 addrMux(memAddr, resAluRes, pc, memAddrSel);
-
-	//ps should be rs sign extended
 	//TODO: Check if pc[11:2] is okay?!?!?!? We are currently truncating last 2 bits bc we always add 4
 	dataMemory dm(clk, memWrEn, memAddr[9:0], pc[11:2], Db, memOut, CmdOut);
 
 	mux2 pcAddMux(pcAdd, 32'd4, branchAluRes, pcSel);
 	alu pcAlu(pcAluRes, , , , pc, pcAdd, 3'd0 /*add command*/);
-
+	
 
 	alu branchAlu(branchAluRes, , , , 32'd4, branchAddr, 3'd0 /*add command*/);
 
