@@ -8,17 +8,17 @@
 `define OR   3'd7
 
 module decoder(
-	input cmd,
-	output immSel, jSel, pcSel, bneSel, memWrEn, memAddrSel, regWrEn,
-	output [1:0] DwSel,
+	input [31:0] cmd,
+	output immSel, memWrEn, memAddrSel, regWrEn,
+	output [1:0] DwSel, jSel, pcSel, 
 	output [4:0] Aa, Ab, Aw, 
-	output [2:0] resAluOp,
+	output [2:0] aluOp,
 	output [15:0] imm,
 	output [31:0] branchAddr
 );
 
-	wire opcode; assign opcode = cmd[31:26];
-	wire funct; assign funct = cmd[5:0];
+	wire [5:0] opcode; assign opcode = cmd[31:26];
+	wire [5:0] funct; assign funct = cmd[5:0];
 
 	wire lw; assign lw = (opcode == 6'h23);
 	wire sw; assign sw = (opcode == 6'h2b);
@@ -37,9 +37,14 @@ module decoder(
 
 	assign Aa = cmd[25:21];
 	assign Ab = cmd[20:16];
-	assign Aw = jal ? 4'd31 : (lw ? Ab : cmd[15:11]);
+	assign Aw = jal ? 5'd31 : (lw ? Ab : cmd[15:11]);
 
 	assign immSel = lw | sw | addi | xori;
-	assign aluOp = xori ? `XOR : (slt ? `SLT : (beq | bne | sub ? `SUB : `ADD))
+	assign aluOp = xori ? `XOR : (slt ? `SLT : (beq | bne | sub ? `SUB : `ADD));
+	assign DwSel = lw ? 2'd2 : (jal ? 2'd1 : 2'd0);
+	assign jSel = jr ? 2'd0 : (jal || j ? 2'd1 : 2'd2);
+	assign pcSel = beq ? 2'd1 : (bne ? 2'd2 : 2'd0);
+	assign memWrEn = sw;
+	assign regWrEn = !(sw | j | beq | bne);
 
 endmodule
