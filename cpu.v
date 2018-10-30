@@ -11,17 +11,21 @@ module cpu(
 );
 
 	reg [31:0] pc;
+	always @(posedge clk) pc <= nextPc;
 
-	wire [31:0] Da, Db, DbOrImm, Dw, resAluRes, immExt, memAddr, memOut, pcAluRes, pcAdd, branchAluRes;
+
+	wire [31:0] nextPc, Da, Db, DbOrImm, Dw, resAluRes, immExt, memAddr, memOut, cmdOut, pcAluRes, pcAdd, branchAluRes;
 	wire [4:0] Aa, Ab, Aw;
 	wire zeroFlag;
 
 	// These should be set by the decoder
-	wire immSel, memAddrSel, regWrEn,  memWrEn, pcSel;
-	wire [1:0] DwSel;
+	wire immSel, memAddrSel, regWrEn,  memWrEn;
+	wire [1:0] DwSel, pcSel, jSel;
 	wire [2:0] resAluOp;
 	wire [15:0] imm;
-	wire [31:0] branchAddr;
+	wire [25:0] jumpAddr;
+
+
 
 	mux3 DwMux(Dw, resAluRes, pcAluRes, memOut, DwSel);
 	regfile rf(Da, Db, Dw, Aa, Ab, Aw, regWrEn, clk);
@@ -31,13 +35,17 @@ module cpu(
 	alu resAlu(resAluRes, , zeroFlag, , Da, DbOrImm, resAluOp);
 
 	mux2 addrMux(memAddr, resAluRes, pc, memAddrSel);
+
 	//TODO: Check if pc[11:2] is okay?!?!?!? We are currently truncating last 2 bits bc we always add 4
-	dataMemory dm(clk, memWrEn, memAddr[9:0], pc[11:2], Db, memOut, CmdOut);
+	dataMemory dm(clk, memWrEn, memAddr[9:0], pc[11:2], Db, memOut, cmdOut);
 
-	mux2 pcAddMux(pcAdd, 32'd4, branchAluRes, pcSel);
+	alu branchAlu(branchAluRes, , , , 32'd4, {16'b0, imm}, 3'd0 /*add command*/);
+
+	// Add branchAluRes instead of 4 iff it's a beq / bne, and the zero flag is appropriate
+	mux2 pcAddMux(pcAdd, 32'd4, branchAluRes, pcSel[0] && (pcSel[1] ^ zeroFlag));
 	alu pcAlu(pcAluRes, , , , pc, pcAdd, 3'd0 /*add command*/);
-	
+	mux3 pcMux(nextPc, Da, {6'b0, jumpAddr}, pcAluRes, jSel);
 
-	alu branchAlu(branchAluRes, , , , 32'd4, branchAddr, 3'd0 /*add command*/);
+
 
 endmodule
