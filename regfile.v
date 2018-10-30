@@ -89,6 +89,7 @@ input[31:0]   input0, input1, input2, input3, input4, input5, input6, input7, in
   assign mux[30] = input30;
   assign mux[31] = input31;
 
+
   assign out = mux[address];	// Connect the output of the array
 endmodule
 
@@ -106,7 +107,7 @@ input		Clk		// Clock (Positive Edge Triggered)
 
   wire[31:0] input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31;
   wire[31:0] writeEnable;
-
+  wire[31:0] outputs;
   decoder1to32 dec0(writeEnable, RegWrite, WriteRegister);
 
   register32zero reg0(input0, WriteData,writeEnable[0], Clk);
@@ -141,6 +142,7 @@ input		Clk		// Clock (Positive Edge Triggered)
   register32 reg29(input29, WriteData,writeEnable[29], Clk);
   register32 reg30(input30, WriteData,writeEnable[30], Clk);
   register32 reg31(input31, WriteData,writeEnable[31], Clk);
+  // outputs <= input2;
 
 
   mux32to1by32 read1(ReadData1, ReadRegister1, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
