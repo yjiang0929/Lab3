@@ -42,7 +42,7 @@ module cpu(
 	alu resAlu(resAluRes, , zeroFlag, , Da, DbOrImm, resAluOp); // The main ALU (used for math, data memory ops)
 
 	// Data memory has two read ports, for instruction and data.  The data port also does writes.
-	dataMemory dm(clk, memWrEn, memAddr[9:0], pc[11:2] /* divide by 4 */, Db, memOut, cmdOut);
+	dataMemory dm(clk, memWrEn, /*memAddr[9:0]*/ resAluRes[9:0], pc[11:2] /* divide by 4 */, Db, memOut, cmdOut);
 
 	// Adds 4 to the branch location
 	alu branchAlu(branchAluRes, , , , 32'd4, {16'b0, imm}, 3'd0 /*add command*/);
