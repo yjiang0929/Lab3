@@ -34,8 +34,8 @@ always #10 clk=!clk;
 	//     $finish();
   //       end
 
-    // $readmemh("asmtest/bleep_vim/jump_test.text.hex", dut.dm.mem, 0);
-    $readmemh("fib_func.text.hex", dut.dm.mem, 0);
+    $readmemh("asmtest/bleep_vim/simple_test.text.hex", dut.dm.mem, 0);
+    // $readmemh("fib_func.text.hex", dut.dm.mem, 0);
 
     $dumpfile("cpuout.vcd");
     $dumpvars();
