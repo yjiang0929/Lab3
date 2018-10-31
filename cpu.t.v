@@ -14,11 +14,27 @@ module testCPU();
   //Instantiate dut
   cpu dut(.clk(clk));
 
+  reg [1023:0] mem_text_fn;
+  reg [1023:0] mem_data_fn;
+  reg [1023:0] dump_fn;
+
 initial clk = 0;
 always #10 clk=!clk;
 
   initial begin
-    $dumpfile("cpu.vcd");
+  // if (! $value$plusargs("mem_text_fn=%s", mem_text_fn)) begin
+	//     $display("ERROR: provide +mem_text_fn=[path to .text memory image] argument");
+	//     $finish();
+  //       end
+  //
+	// if (! $value$plusargs("dump_fn=%s", dump_fn)) begin
+	//     $display("ERROR: provide +dump_fn=[path for VCD dump] argument");
+	//     $finish();
+  //       end
+
+    $readmemh("fib_func.text.hex", dut.dm.mem, 0);
+
+    $dumpfile("cpuout.vcd");
     $dumpvars();
     $display("After begintest");
     #1000;
@@ -27,25 +43,25 @@ always #10 clk=!clk;
     // $display("Testbench start");
 
     $display("After begintest = 1");
-    $finish();
-  end
 
-  always @(posedge begintest) begin
+
     dutpassed = 1;
-    $display("Entered always loop");
-    $display("%b", dut.rf.input2);
+    $display("%b", dut.rf.reg2.qout);
     $display("%b", hanoi);
     if(dut.rf.reg2.qout != hanoi) begin
     $display("Test failed: Tower of Hanoi answer unexpected; expected %b but got %b", hanoi, dut.rf.reg2.qout);
     dutpassed = 0;
     end
 
-  endtest = 1;
-  $display("Endtest: %b ", endtest);
+    endtest = 1;
+    $display("DUT passed? %b", dutpassed);
+    $display("Endtest: %b ", endtest);
+
+    $finish();
   end
 
-always @(posedge endtest) begin
-  $display("DUT passed? %b", dutpassed);
-end
+
+
+
 
 endmodule

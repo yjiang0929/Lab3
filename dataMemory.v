@@ -21,7 +21,7 @@ module dataMemory
     end
   end
 
-	initial $readmemh("fib.dat", mem);
+	// initial $readmemh("fib.dat", mem);
 
   assign DataOut = mem[Addr];
   assign CmdOut = mem[CmdAddr];
