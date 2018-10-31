@@ -41,16 +41,23 @@ module register32zero
   input clk
   );
 
-	/*
+ 	assign qout = 32'h0;
+endmodule
+
+module register32sp
+(
+  output reg[31:0] qout,
+  input[31:0] din,
+  input wrenable,
+  input clk
+  );
+
   always @(posedge clk) begin
-    if(wrenable) begin
-      qout <= 32'h00000000;
+      if(wrenable) begin
+          qout <= din;
       end
   end
-	*/
-
- 	assign qout = 32'h0;
-
+	initial qout = 32'h3ffc;
 endmodule
 
 module mux32to1by32
@@ -90,7 +97,7 @@ input[31:0]   input0, input1, input2, input3, input4, input5, input6, input7, in
   assign mux[26] = input26;
   assign mux[27] = input27;
   assign mux[28] = input28;
-  assign mux[29] = 32'h3ffc;
+  assign mux[29] = input29;
   assign mux[30] = input30;
   assign mux[31] = input31;
 
@@ -144,7 +151,7 @@ input		Clk		// Clock (Positive Edge Triggered)
   register32 reg26(input26, WriteData,writeEnable[26], Clk);
   register32 reg27(input27, WriteData,writeEnable[27], Clk);
   register32 reg28(input28, WriteData,writeEnable[28], Clk);
-  register32 reg29(input29, WriteData,writeEnable[29], Clk);
+  register32sp reg29(input29, WriteData,writeEnable[29], Clk);
   register32 reg30(input30, WriteData,writeEnable[30], Clk);
   register32 reg31(input31, WriteData,writeEnable[31], Clk);
   // outputs <= input2;
