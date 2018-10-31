@@ -5,7 +5,7 @@ j second
 
 third:
 add $v0, $a0, $a1
-xori $a3, $a0, $a1
+xori $a3, $a0, 1
 j end
 
 second:
