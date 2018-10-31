@@ -13,7 +13,7 @@ module cpu(
 
 	reg [31:0] pc;
 
-	initial pc <= 32'd1024;
+	initial pc <=0;
 
 	always @(posedge clk) pc <= nextPc;
 	// always @(posedge clk) pc <= pc + 32'd4;
