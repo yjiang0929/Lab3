@@ -97,6 +97,7 @@ module regfile
 (
 output[31:0]	ReadData1,	// Contents of first register read
 output[31:0]	ReadData2,	// Contents of second register read
+output[31:0] DirectRead[31:0], // The actual contents of the registers, for debugging
 input[31:0]	WriteData,	// Contents to write to register
 input[4:0]	ReadRegister1,	// Address of first register to read
 input[4:0]	ReadRegister2,	// Address of second register to read
@@ -147,5 +148,7 @@ input		Clk		// Clock (Positive Edge Triggered)
 
   mux32to1by32 read1(ReadData1, ReadRegister1, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
   mux32to1by32 read2(ReadData2, ReadRegister2, input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31);
+
+	assign {DirectRead[0], DirectRead[1], DirectRead[2], DirectRead[3], DirectRead[4], DirectRead[5], DirectRead[6], DirectRead[7], DirectRead[8], DirectRead[9], DirectRead[10], DirectRead[11], DirectRead[12], DirectRead[13], DirectRead[14], DirectRead[15], DirectRead[16], DirectRead[17], DirectRead[18], DirectRead[19], DirectRead[20], DirectRead[21], DirectRead[22], DirectRead[23], DirectRead[24], DirectRead[25], DirectRead[26], DirectRead[27], DirectRead[28], DirectRead[29], DirectRead[30], DirectRead[31]} = {input0, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10, input11, input12, input13, input14, input15, input16, input17, input18, input19, input20, input21, input22, input23, input24, input25, input26, input27, input28, input29, input30, input31};
 
 endmodule
