@@ -1,23 +1,23 @@
 module signExt
 (
-  input [15:0] imm,
-  output [31:0] immExt
+  input [15:0] in,
+  output [31:0] out
 );
-  assign immExt[15:0] = imm;
-  assign immExt[16] = imm[15];
-  assign immExt[17] = imm[15];
-  assign immExt[18] = imm[15];
-  assign immExt[19] = imm[15];
-  assign immExt[20] = imm[15];
-  assign immExt[21] = imm[15];
-  assign immExt[22] = imm[15];
-  assign immExt[23] = imm[15];
-  assign immExt[24] = imm[15];
-  assign immExt[25] = imm[15];
-  assign immExt[26] = imm[15];
-  assign immExt[27] = imm[15];
-  assign immExt[28] = imm[15];
-  assign immExt[29] = imm[15];
-  assign immExt[30] = imm[15];
-  assign immExt[31] = imm[15];
+  assign out[15:0] = in;
+  assign out[16] = in[15];
+  assign out[17] = in[15];
+  assign out[18] = in[15];
+  assign out[19] = in[15];
+  assign out[20] = in[15];
+  assign out[21] = in[15];
+  assign out[22] = in[15];
+  assign out[23] = in[15];
+  assign out[24] = in[15];
+  assign out[25] = in[15];
+  assign out[26] = in[15];
+  assign out[27] = in[15];
+  assign out[28] = in[15];
+  assign out[29] = in[15];
+  assign out[30] = in[15];
+  assign out[31] = in[15];
 endmodule
