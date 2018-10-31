@@ -55,7 +55,7 @@ module cpu(
 	alu pcAlu(pcAluRes, , , , pc, pcAdd, 3'd0);
 	*/
 
-  assign pcAluRes = pc + (pcSel[0] && (pcSel[1] ^ zeroFlag)) ? branchAluRes  : 32'd4;
+  assign pcAluRes = pc + ((pcSel[0] && (pcSel[1] ^ zeroFlag)) ? branchAluRes : 32'd4);
 
 	// Iff jump instruction, then reset the pc; otherwise add some amount
 	mux3 pcMux(nextPc, Da, {pc[31:28], jumpAddr, 2'b0}, pcAluRes, jSel);
