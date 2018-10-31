@@ -12,8 +12,11 @@ module cpu(
 );
 
 	reg [31:0] pc;
+	
 	initial pc <= 0;
+
 	always @(posedge clk) pc <= nextPc;
+
 
 
 	wire [31:0] nextPc, Da, Db, DbOrImm, Dw, resAluRes, immExt, memAddr, memOut, cmdOut, pcAluRes, pcAdd, branchAluRes;
