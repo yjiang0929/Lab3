@@ -50,7 +50,7 @@ module register32zero
 	*/
 
  	assign qout = 32'h0;
- 	
+
 endmodule
 
 module mux32to1by32
@@ -90,7 +90,7 @@ input[31:0]   input0, input1, input2, input3, input4, input5, input6, input7, in
   assign mux[26] = input26;
   assign mux[27] = input27;
   assign mux[28] = input28;
-  assign mux[29] = input29;
+  assign mux[29] = 32'h3ffc;
   assign mux[30] = input30;
   assign mux[31] = input31;
 
