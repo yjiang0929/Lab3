@@ -16,7 +16,7 @@ module cpu(
 	initial pc <= 32'd1024;
 
 	always @(posedge clk) pc <= nextPc;
-
+	// always @(posedge clk) pc <= pc + 32'd4;
 
 
 	wire [31:0] nextPc, Da, Db, DbOrImm, Dw, resAluRes, immExt, memAddr, memOut, cmdOut, pcAluRes, pcAdd, branchAluRes;
@@ -47,11 +47,15 @@ module cpu(
 	// Adds 4 to the branch location
 	alu branchAlu(branchAluRes, , , , 32'd4, {16'b0, imm}, 3'd0 /*add command*/);
 
+	/*
 	// Add branchAluRes instead of 4 iff it's a beq / bne, and the zero flag is appropriate
 	mux2 pcAddMux(pcAdd, 32'd4, branchAluRes, pcSel[0] && (pcSel[1] ^ zeroFlag));
 
 	// Add 4 (or some other value) to the pc
-	alu pcAlu(pcAluRes, , , , pc, pcAdd, 3'd0 /*add command*/);
+	alu pcAlu(pcAluRes, , , , pc, pcAdd, 3'd0);
+	*/
+
+  assign pcAluRes = pc + (pcSel[0] && (pcSel[1] ^ zeroFlag)) ? branchAluRes  : 32'd4;
 
 	// Iff jump instruction, then reset the pc; otherwise add some amount
 	mux3 pcMux(nextPc, Da, {6'b0, jumpAddr}, pcAluRes, jSel);
