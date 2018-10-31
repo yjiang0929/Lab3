@@ -41,7 +41,7 @@ module decoder(
 	// Addresses of the registers we'll read from and/or write to
 	assign Aa = cmd[25:21];
 	assign Ab = cmd[20:16];
-	assign Aw = jal ? 5'd31 : (lw ? Ab : cmd[15:11]);
+	assign Aw = jal ? 5'd31 : (lw | addi | xori ? Ab : cmd[15:11]);
 
 	// Selectors for various things
 	assign immSel = lw | sw | addi | xori; // Use an immediate?
