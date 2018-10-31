@@ -18,7 +18,7 @@ module testCPU();
   reg [1023:0] mem_data_fn;
   reg [1023:0] dump_fn;
 
-initial clk = 1;
+initial clk = 0;
 always #10 clk=!clk;
 
   initial begin
