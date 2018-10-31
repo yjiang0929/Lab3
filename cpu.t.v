@@ -34,7 +34,7 @@ always #10 clk=!clk;
 	//     $finish();
   //       end
 
-    $readmemh("simple_test.text.hex", dut.dm.mem, 0);
+    $readmemh("fib_func.text.hex", dut.dm.mem, 0);
 
     $dumpfile("cpuout.vcd");
     $dumpvars();
