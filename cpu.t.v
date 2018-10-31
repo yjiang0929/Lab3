@@ -10,6 +10,8 @@ module testCPU();
   reg dutpassed = 1; //Indicates whether register file passed tests
 
   wire[31:0] hanoi = 32'd270;
+  wire[31:0] fib = 32'd58;
+  wire[31:0] simple = 32'd4;
 
   //Instantiate dut
   cpu dut(.clk(clk));
@@ -32,7 +34,7 @@ always #10 clk=!clk;
 	//     $finish();
   //       end
 
-    $readmemh("fib_func.text.hex", dut.dm.mem, 0);
+    $readmemh("simple_test.text.hex", dut.dm.mem, 0);
 
     $dumpfile("cpuout.vcd");
     $dumpvars();
@@ -50,9 +52,9 @@ always #10 clk=!clk;
     $display("%b", dut.pcAluRes);
     $display("%b", dut.jSel);
 
-    $display("%b", dut.dm.mem[0]);
-    $display("%b", hanoi);
-    if(dut.rf.reg2.qout != hanoi) begin
+    $display("%b", dut.rf.reg2.qout);
+    $display("%b", simple);
+    if(dut.rf.reg2.qout != simple) begin
     $display("Test failed: Tower of Hanoi answer unexpected; expected %b but got %b", hanoi, dut.rf.reg2.qout);
     dutpassed = 0;
     end
