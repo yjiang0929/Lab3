@@ -17,9 +17,14 @@ module decoder(
 	output [25:0] jumpAddr
 );
 
+	// Always in the same place in the command, though not always there
 	wire [5:0] opcode; assign opcode = cmd[31:26];
 	wire [5:0] funct; assign funct = cmd[5:0];
 
+	assign imm = cmd[15:0];
+	assign jumpAddr = cmd[25:0];
+
+	// One-hot representation of opcodes / functs
 	wire lw; assign lw = (opcode == 6'h23);
 	wire sw; assign sw = (opcode == 6'h2b);
 	wire j; assign j = (opcode == 6'h2);
@@ -33,19 +38,18 @@ module decoder(
 	wire sub; assign sub = (opcode == 6'h0 && funct == 6'h22);
 	wire slt; assign slt = (opcode == 6'h0 && funct == 6'h2a);
 
-	assign imm = cmd[15:0];
-	assign jumpAddr = cmd[25:0];
-
+	// Addresses of the registers we'll read from and/or write to
 	assign Aa = cmd[25:21];
 	assign Ab = cmd[20:16];
 	assign Aw = jal ? 5'd31 : (lw ? Ab : cmd[15:11]);
 
-	assign immSel = lw | sw | addi | xori;
-	assign aluOp = xori ? `XOR : (slt ? `SLT : (beq | bne | sub ? `SUB : `ADD));
-	assign DwSel = lw ? 2'd2 : (jal ? 2'd1 : 2'd0);
-	assign jSel = jr ? 2'd0 : (jal || j ? 2'd1 : 2'd2);
-	assign pcSel = beq ? 2'd1 : (bne ? 2'd2 : 2'd0);
-	assign memWrEn = sw;
-	assign regWrEn = !(sw | j | beq | bne);
+	// Selectors for various things
+	assign immSel = lw | sw | addi | xori; // Use an immediate?
+	assign aluOp = xori ? `XOR : (slt ? `SLT : (beq | bne | sub ? `SUB : `ADD)); // What operation in the main ALU?
+	assign DwSel = lw ? 2'd2 : (jal ? 2'd1 : 2'd0); // What data to write to the register file?
+	assign jSel = jr ? 2'd0 : (jal || j ? 2'd1 : 2'd2); // What should the PC be next cycle?
+	assign pcSel = beq ? 2'd1 : (bne ? 2'd2 : 2'd0); // What should we add to the PC (and maybe feed back into it)?
+	assign memWrEn = sw; // Write to memeory?
+	assign regWrEn = !(sw | j | beq | bne); // Write to register?
 
 endmodule
