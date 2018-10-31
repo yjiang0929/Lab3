@@ -1,28 +1,26 @@
 // Data memory, with automatic initialization
-// Credit: Ben Hill
+// Credit: Ben Hill, mostly
+// Three ports: dataIn (write), dataOut (read), cmdOut (read)
+// dataIn and dataOut share an address
 
 module dataMemory
 (
-  input clk, regWE,
-  input[9:0] Addr,
-  input[9:0] CmdAddr,
-  input[31:0] DataIn,
-  output[31:0]  DataOut,
-  output[31:0] CmdOut
+  input clk, regWE, // On rising edge, iff regWE, writes data to register
+  input[9:0] dataAddr, 
+  input[9:0] cmdAddr,
+  input[31:0] dataIn,
+  output[31:0]  dataOut,
+  output[31:0] cmdOut
 );
 
-  reg [31:0] mem[1023:0];
+  reg [31:0] mem[1023:0]; // The actual memory
 
-  //TODO: Divide by 4?
-
-  always @(posedge clk) begin
+  always @(posedge clk) begin // Write if necessary
     if (regWE) begin
-      mem[Addr] <= DataIn;
+      mem[dataAddr] <= dataIn;
     end
   end
 
-	// initial $readmemh("fib.dat", mem);
-
-  assign DataOut = mem[Addr];
-  assign CmdOut = mem[CmdAddr];
+  assign dataOut = mem[dataAddr]; // Data output
+  assign cmdOut = mem[cmdAddr]; // Command output
 endmodule
