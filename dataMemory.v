@@ -21,8 +21,6 @@ module dataMemory
     end
   end
 
-	initial $readmemh("fib.dat", mem); // Initialize by reading a file
-
   assign dataOut = mem[dataAddr]; // Data output
   assign cmdOut = mem[cmdAddr]; // Command output
 endmodule
