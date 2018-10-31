@@ -44,7 +44,7 @@ always #10 clk=!clk;
     $display("Testbench start");
 
     $display("After begintest = 1");
-    #2000;
+    #800;
 
     dutpassed = 1;
     $display("%b", dut.nextPc);
