@@ -36,17 +36,21 @@ always #10 clk=!clk;
 
     $dumpfile("cpuout.vcd");
     $dumpvars();
-    $display("After begintest");
-    #1000;
-    $display("After delay");
+
     begintest = 1;
-    // $display("Testbench start");
+    $display("Testbench start");
 
     $display("After begintest = 1");
-
+    #1000;
 
     dutpassed = 1;
-    $display("%b", dut.rf.reg2.qout);
+    $display("%b", dut.nextPc);
+    $display("%b", dut.Da);
+    $display("%b", dut.jumpAddr);
+    $display("%b", dut.pcAluRes);
+    $display("%b", dut.jSel);
+
+    $display("%b", dut.dm.mem[0]);
     $display("%b", hanoi);
     if(dut.rf.reg2.qout != hanoi) begin
     $display("Test failed: Tower of Hanoi answer unexpected; expected %b but got %b", hanoi, dut.rf.reg2.qout);
@@ -59,9 +63,5 @@ always #10 clk=!clk;
 
     $finish();
   end
-
-
-
-
 
 endmodule

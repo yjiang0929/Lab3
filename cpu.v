@@ -26,6 +26,7 @@ module cpu(
 	wire [15:0] imm;
 	wire [25:0] jumpAddr;
 
+
 	decoder dec(cmdOut, immSel, memWrEn, regWrEn, DwSel, jSel, pcSel, Aa, Ab, Aw, resAluOp, imm, jumpAddr);
 
 
@@ -44,8 +45,8 @@ module cpu(
 
 	// Add branchAluRes instead of 4 iff it's a beq / bne, and the zero flag is appropriate
 	mux2 pcAddMux(pcAdd, 32'd4, branchAluRes, pcSel[0] && (pcSel[1] ^ zeroFlag));
-	
-	// Add 4 (or some other value) to the pc 
+
+	// Add 4 (or some other value) to the pc
 	alu pcAlu(pcAluRes, , , , pc, pcAdd, 3'd0 /*add command*/);
 
 	// Iff jump instruction, then reset the pc; otherwise add some amount
