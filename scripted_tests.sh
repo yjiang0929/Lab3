@@ -15,7 +15,10 @@ test_num=0
 #Create unique data memory instantiation
 files=("bleep_vim/hanoi_func/hanoi" \
           "NINJA/fib_func/fib_func" \
-          "StoreMoney/yeet")
+          "StoreMoney/yeet" \
+          "DazedAndConfused/test_1" \
+          "DazedAndConfused/test_3" \
+          "bleep_vim/simple/slt_test")
 
 
 #Loop through the files
@@ -28,7 +31,7 @@ do
   #Make the call
   ./cputest $fullcall
   #Print the call so you can see what they look like
-  echo $fullcall
+  # echo $fullcall
   #Increment the test number
   test_num=$((test_num+1))
 done

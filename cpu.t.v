@@ -12,7 +12,10 @@ module testCPU();
   //Order of tests: ours (bleep_vim), dazedandconfused, jumpingfoxes, ninja, sree, storemoney
   wire[31:0] hanoi = 32'd270; //test 0
   wire[31:0] fib = 32'd58; //test 1
-  wire[31:0] yeet = 32'd121; //test 2
+  wire[31:0] yeet = 32'd119; //test 2
+  wire[31:0] test_1 = 32'hf; //test 3
+  wire[31:0] test_3 = 32'd42; //test 4
+  wire[31:0] slt = 32'd1; //test 5
 
   //Instantiate dut
   cpu dut(.clk(clk));
@@ -50,6 +53,9 @@ always #10 clk=!clk;
     $dumpfile(file_out);
     $dumpvars();
 
+    $display("Starting test number: %d", test_num);
+
+
     //Note beginning of test
     begintest = 1;
     #200000;  //Wait a while to let the CPU do as it needs to
@@ -64,13 +70,31 @@ always #10 clk=!clk;
 
     if(test_num == 1) begin //If we're test 1, check against fibinacci
       if(dut.rf.reg2.qout != fib) begin
-      $display("Test failed: answer unexpected; expected %b but got %b", fib, dut.rf.reg2.qout);
+      $display("Test failed: Fibinacci answer unexpected; expected %b but got %b", fib, dut.rf.reg2.qout);
       dutpassed = 0;
       end
     end
     if(test_num == 2) begin //If we're test 2, check against yeet
-      if(dut.rf.reg2.qout != yeet) begin
-      $display("Test failed: answer unexpected; expected %b but got %b", yeet, dut.rf.reg2.qout);
+      if(dut.rf.reg8.qout != yeet) begin
+      $display("Test failed: Yeet answer unexpected; expected %b but got %b", yeet, dut.rf.reg8.qout);
+      dutpassed = 0;
+      end
+    end
+    if(test_num == 3) begin //If we're test 3, check against test_1
+      if(dut.rf.reg8.qout != test_1) begin
+      $display("Test failed: test_1 answer unexpected; expected %b but got %b", test_1, dut.rf.reg8.qout);
+      dutpassed = 0;
+      end
+    end
+    if(test_num == 4) begin //If we're test 4, check against test_3
+      if(dut.rf.reg11.qout != test_3) begin
+      $display("Test failed: test_3 answer unexpected; expected %b but got %b", test_3, dut.rf.reg11.qout);
+      dutpassed = 0;
+      end
+    end
+    if(test_num == 5) begin //If we're test 5, check against slt
+      if(dut.rf.reg2.qout != slt) begin
+      $display("Test failed: Fibinacci answer unexpected; expected %b but got %b", slt, dut.rf.reg2.qout);
       dutpassed = 0;
       end
     end
