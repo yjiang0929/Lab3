@@ -34,9 +34,14 @@ always #10 clk=!clk;
 	//     $finish();
   //       end
 
+<<<<<<< HEAD
 
     $readmemh("asmtest/NINJA/fib_func/fib_func.text.hex", dut.dm.mem, 0);
     // $readmemh("asmtest/bleep_vim/simple_sl.text.hex", dut.dm.mem, 0);
+=======
+    // $readmemh("asmtest/NINJA/fib_func/fib_func.text.hex", dut.dm.mem, 0);
+    $readmemh("asmtest/bleep_vim/branch_test.text.hex", dut.dm.mem, 0);
+>>>>>>> b4407b50ff0e9ed0f80167cf597446b4fa6c0bc7
 
 
     $dumpfile("cpuout.vcd");
