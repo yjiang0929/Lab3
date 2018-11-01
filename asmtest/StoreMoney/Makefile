@@ -1,7 +1,7 @@
 # Generate machine code memory image from MIPS assembly
 
 # Get PROGRAM and *MEMDUMP from project settings
-PROGRAM := add_sub_test
+PROGRAM := yeet
 TEXTMEMDUMP := $(PROGRAM).text.hex
 DATAMEMDUMP := $(PROGRAM).data.hex
 
