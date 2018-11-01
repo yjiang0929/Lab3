@@ -45,7 +45,7 @@ module cpu(
 	dataMemory dm(clk, memWrEn, /*memAddr[9:0]*/ resAluRes[9:0], pc[11:2] /* divide by 4 */, Db, memOut, cmdOut);
 
 	// Adds 4 to the branch location
-	alu branchAlu(branchAluRes, , , , 32'd4, {16'b0, imm}, 3'd0 /*add command*/);
+	alu branchAlu(branchAluRes, , , , 32'd4, {14'b0, imm, 2'b0}, 3'd0 /*add command*/);
 
 	/*
 	// Add branchAluRes instead of 4 iff it's a beq / bne, and the zero flag is appropriate
@@ -55,7 +55,8 @@ module cpu(
 	alu pcAlu(pcAluRes, , , , pc, pcAdd, 3'd0);
 	*/
 
-  assign pcAluRes = pc + ((pcSel[0] && (pcSel[1] ^ zeroFlag)) ? branchAluRes : 32'd4);
+  // assign pcAluRes = pc + ((pcSel[0] && (pcSel[1] ^ zeroFlag)) ? branchAluRes : 32'd4);
+	assign pcAluRes = pc + ( (pcSel == 2'd1 && zeroFlag == 1) || (pcSel == 2'd2 && zeroFlag == 0) ? branchAluRes : 32'd4);
 
 	// Iff jump instruction, then reset the pc; otherwise add some amount
 	mux3 pcMux(nextPc, Da, {pc[31:28], jumpAddr, 2'b0}, pcAluRes, jSel);
