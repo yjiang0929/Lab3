@@ -50,6 +50,6 @@ module decoder(
 	assign jSel = jr ? 2'd0 : (jal || j ? 2'd1 : 2'd2); // What should the PC be next cycle?
 	assign pcSel = beq ? 2'd1 : (bne ? 2'd2 : 2'd0); // What should we add to the PC (and maybe feed back into it)?
 	assign memWrEn = sw; // Write to memeory?
-	assign regWrEn = !(sw | j | beq | bne); // Write to register?
+	assign regWrEn = !(sw | j | beq | bne | jr); // Write to register?
 
 endmodule
