@@ -1,20 +1,34 @@
 #!/bin/bash
 
+#Defining the constant parts of the strings throughout all calls
 base="asmtest/"
 post=".text.hex"
-files=("bleep_vim/hanoi_func/hanoi" \
-          "NINJA/array_loop/array_loop" \
-          "NINJA/fib_func/fib_func" \
-          "StoreMoney/yeet")
-test_num=0
+outfile="cpuout"
+outfileEnd=".vcd"
 call="+mem_text_fn="
 callTwo=" +test_num="
+callThree=" +file_out="
 
+#Create incrementer for tests
+test_num=0
+
+#Create unique data memory instantiation
+files=("bleep_vim/hanoi_func/hanoi" \
+          "NINJA/fib_func/fib_func" \
+          "StoreMoney/yeet")
+
+
+#Loop through the files
 for i in "${files[@]}"
 do
-	full="$base$i$post"
-  fullcall="$call$full$callTwo$test_num"
+  #Combine everything into a full call
+	full="$base$i$post" #Makes the first part of the call, excluding vcdout
+  output="$callThree$outfile$test_num$outfileEnd" #Creates vcdout part of call
+  fullcall="$call$full$callTwo$test_num$output" #puts everything together
+  #Make the call
   ./cputest $fullcall
+  #Print the call so you can see what they look like
   echo $fullcall
+  #Increment the test number
   test_num=$((test_num+1))
 done

@@ -3,98 +3,81 @@
 `define DELAY 5000
 
 module testCPU();
-  reg clk;
+  reg clk; //Declare clock
 
   reg begintest = 0; //Set high to begin testing register file
   reg endtest = 0; //Set high to signal test completion
   reg dutpassed = 1; //Indicates whether register file passed tests
 
   //Order of tests: ours (bleep_vim), dazedandconfused, jumpingfoxes, ninja, sree, storemoney
-  wire[31:0] hanoi = 32'd270; //0
-  // wire[31:0] array_loop = ; //7 //another array test; come back to
-  wire[31:0] fib = 32'd58; //8 $v0
-  wire[31:0] yeet = 32'd121; //11 t0
-
-  wire[31:0] simple = 32'd4;
-
-  wire[31:0] cpuout[1023:0];
+  wire[31:0] hanoi = 32'd270; //test 0
+  wire[31:0] fib = 32'd58; //test 1
+  wire[31:0] yeet = 32'd121; //test 2
 
   //Instantiate dut
   cpu dut(.clk(clk));
 
+  //Declare inputs
   reg [1023:0] mem_text_fn;
-  // reg [1023:0] mem_data_fn;
-  // reg [1023:0] dump_fn;
-
-  reg[1023:0] r_RESULT;
   reg[1023:0] test_num;
-  reg[1023:0] test_str;
+  reg [1023:0] file_out;
 
-integer f;
-
+//Set up clock
 initial clk = 0;
 always #10 clk=!clk;
 
-
+//Read in the memory location
   initial begin
-
-  $dumpvars(0, dut.dm.mem[0]);
-  // for (idx = 0; idx < 32; idx = idx + 1) $dumpvars(0, array[idx]);
-
   if (! $value$plusargs("mem_text_fn=%s", mem_text_fn)) begin
 	    $display("ERROR: memory location not provided. Provide +mem_text_fn=[path to .text memory image] argument");
 	    $finish();
         end
-
+//Read in the test number
   if (! $value$plusargs("test_num=%d", test_num)) begin
     $display("ERROR: Test name not specified. Provide +test_num=[test_num] argument");
     $finish();
     end
+//Read in the vcd file we want to write to
+    if (! $value$plusargs("file_out=%s", file_out)) begin
+      $display("ERROR: Test file output (.vcd) not specified. Provide +file_out=[file_out] argument");
+      $finish();
+      end
 
+      //Read into the datamemory
     $readmemh(mem_text_fn, dut.dm.mem,0);
 
-    $dumpfile("cpuout.vcd");
+    //Prep dumpfile
+    $dumpfile(file_out);
     $dumpvars();
 
+    //Note beginning of test
     begintest = 1;
-
-    #200000;
-
+    #200000;  //Wait a while to let the CPU do as it needs to
     dutpassed = 1;
 
-
-
-    if(test_num == 0) begin
+    if(test_num == 0) begin //If we're test 0, check it against "hanoi"
       if(dut.rf.reg2.qout != hanoi) begin
       $display("Test failed: Tower of Hanoi answer unexpected; expected %b but got %b", hanoi, dut.rf.reg2.qout);
       dutpassed = 0;
       end
     end
-    if(test_num == 1) begin
-    $display("NOT IMPLMENTED YET");
-      if(dut.dm.mem[0] != 32'd00000005) begin
-      $display("Test failed: answer unexpected; expected %b but got %b", , dut.rf.reg2.qout);
-      dutpassed = 0;
-      end
-    end
-    if(test_num == 2) begin
+
+    if(test_num == 1) begin //If we're test 1, check against fibinacci
       if(dut.rf.reg2.qout != fib) begin
       $display("Test failed: answer unexpected; expected %b but got %b", fib, dut.rf.reg2.qout);
       dutpassed = 0;
       end
     end
-    if(test_num == 3) begin
-      if(dut.rf.reg8.qout != yeet) begin
+    if(test_num == 2) begin //If we're test 2, check against yeet
+      if(dut.rf.reg2.qout != yeet) begin
       $display("Test failed: answer unexpected; expected %b but got %b", yeet, dut.rf.reg2.qout);
       dutpassed = 0;
       end
     end
 
-
+    //Note if the device under test passed
     endtest = 1;
     $display("DUT passed? %b", dutpassed);
-    $display("Endtest: %b ", endtest);
-
     $finish();
   end
 
