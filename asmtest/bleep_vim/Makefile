@@ -4,7 +4,8 @@ MARS_PATH := mars
 MARS_OPTS := a  mc CompactTextAtZero
 MARS      := $(MARS_PATH) $(MARS_OPTS)
 
-PROGRAMS := add_sub_test yeet
+PROGRAMS := hanoi_func/hanoi simple/branch_test simple/jump_test simple/simple_sl simple/simple_test simple/sw_test
+
 assemble:
 	$(foreach prog,$(PROGRAMS),$(MARS) dump .text HexText $(prog).text.hex $(prog).asm;)
 	$(foreach prog,$(PROGRAMS),$(MARS) dump .data HexText $(prog).data.hex $(prog).asm;)
