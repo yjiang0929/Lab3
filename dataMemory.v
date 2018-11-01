@@ -6,7 +6,7 @@
 module dataMemory
 (
   input clk, regWE, // On rising edge, iff regWE, writes data to register
-  input[9:0] dataAddr, 
+  input[9:0] dataAddr,
   input[9:0] cmdAddr,
   input[31:0] dataIn,
   output[31:0]  dataOut,
@@ -20,6 +20,8 @@ module dataMemory
       mem[dataAddr] <= dataIn;
     end
   end
+  integer idx;
+
 
   assign dataOut = mem[dataAddr]; // Data output
   assign cmdOut = mem[cmdAddr]; // Command output

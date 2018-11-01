@@ -15,5 +15,6 @@ do
 	full="$base$i$post"
   fullcall="$call$full$callTwo$test_num"
   ./cputest $fullcall
+  echo $fullcall
   test_num=$((test_num+1))
 done

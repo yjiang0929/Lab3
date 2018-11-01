@@ -9,11 +9,12 @@
 
 module cpu(
 	input clk
+	// output reg[31:0] cpuout[1023:0]
 );
 
 	wire [31:0] nextPc, Da, Db, DbOrImm, Dw, resAluRes, immExt, memAddr, memOut, cmd, pcAluRes, pcAdd, branchAluRes;
 	wire zeroFlag;
-	
+
 	reg [31:0] pc;  // Program counter is registers; the last 2 bits are ignored because we always run words
 	initial pc <=0; // Initialize at 0
 	always @(posedge clk) pc <= nextPc; // Update every clock cycle
@@ -32,7 +33,7 @@ module cpu(
 
 
 	// The main logic, which does the "execute" part of fetch / decode / execute
-	
+
 	mux3 DwMux(Dw, resAluRes, pcAluRes, memOut, DwSel); // Select which data to write
 	regfile rf(Da, Db, Dw, Aa, Ab, Aw, regWrEn, clk); // The register file
 
@@ -40,7 +41,7 @@ module cpu(
 	mux2 DbMux(DbOrImm, Db, immExt, immSel); // Select either immediate or register for the main ALU's second input
 
 	// The main ALU, used for math and jumping
-	alu resAlu(resAluRes, , zeroFlag, , Da, DbOrImm, resAluOp); 
+	alu resAlu(resAluRes, , zeroFlag, , Da, DbOrImm, resAluOp);
 
 	// Data memory has two read ports, for instruction and data.  The data port also does writes.
 	// Divide PC by 4 so it gets that word, not that byte

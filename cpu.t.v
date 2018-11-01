@@ -17,6 +17,8 @@ module testCPU();
 
   wire[31:0] simple = 32'd4;
 
+  wire[31:0] cpuout[1023:0];
+
   //Instantiate dut
   cpu dut(.clk(clk));
 
@@ -28,10 +30,17 @@ module testCPU();
   reg[1023:0] test_num;
   reg[1023:0] test_str;
 
+integer f;
+
 initial clk = 0;
 always #10 clk=!clk;
 
+
   initial begin
+
+  $dumpvars(0, dut.dm.mem[0]);
+  // for (idx = 0; idx < 32; idx = idx + 1) $dumpvars(0, array[idx]);
+
   if (! $value$plusargs("mem_text_fn=%s", mem_text_fn)) begin
 	    $display("ERROR: memory location not provided. Provide +mem_text_fn=[path to .text memory image] argument");
 	    $finish();
@@ -54,8 +63,8 @@ always #10 clk=!clk;
     dutpassed = 1;
 
 
+
     if(test_num == 0) begin
-    $display("got here");
       if(dut.rf.reg2.qout != hanoi) begin
       $display("Test failed: Tower of Hanoi answer unexpected; expected %b but got %b", hanoi, dut.rf.reg2.qout);
       dutpassed = 0;
@@ -63,10 +72,10 @@ always #10 clk=!clk;
     end
     if(test_num == 1) begin
     $display("NOT IMPLMENTED YET");
-      // if(dut.rf.reg2.qout != ) begin
-      // $display("Test failed: answer unexpected; expected %b but got %b", , dut.rf.reg2.qout);
-      // dutpassed = 0;
-      // end
+      if(dut.dm.mem[0] != 32'd00000005) begin
+      $display("Test failed: answer unexpected; expected %b but got %b", , dut.rf.reg2.qout);
+      dutpassed = 0;
+      end
     end
     if(test_num == 2) begin
       if(dut.rf.reg2.qout != fib) begin
@@ -75,7 +84,7 @@ always #10 clk=!clk;
       end
     end
     if(test_num == 3) begin
-      if(dut.rf.reg2.qout != yeet) begin
+      if(dut.rf.reg8.qout != yeet) begin
       $display("Test failed: answer unexpected; expected %b but got %b", yeet, dut.rf.reg2.qout);
       dutpassed = 0;
       end
