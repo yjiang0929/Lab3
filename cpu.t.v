@@ -22,7 +22,7 @@ module testCPU();
 
   //Declare inputs
   reg [1023:0] mem_text_fn;
-  reg[1023:0] test_num;
+  reg[3:0] test_num;
   reg [1023:0] file_out;
 
 //Set up clock
@@ -53,7 +53,7 @@ always #10 clk=!clk;
     $dumpfile(file_out);
     $dumpvars();
 
-    $display("Starting test number: %d", test_num);
+    $display("Starting test number (in binary): %b", test_num);
 
 
     //Note beginning of test
