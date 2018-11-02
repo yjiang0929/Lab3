@@ -30,7 +30,7 @@ do
   fullcall="$call$full$callTwo$test_num$output" #puts everything together
   #Make the call
   ./cputest $fullcall
-  #Print the call so you can see what they look like
+  #Print the call so you can see what they look like (commented for neatness)
   # echo $fullcall
   #Increment the test number
   test_num=$((test_num+1))
