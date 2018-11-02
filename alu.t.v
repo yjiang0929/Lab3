@@ -19,7 +19,7 @@ module testALU();
     wire[31:0] r;
     wire zero, co, ofl;
 
-    ALU alu(r, co, zero, ofl, a, b, control);
+    alu dut(r, co, zero, ofl, a, b, control);
 
     initial begin
       $dumpfile("alu.vcd");
